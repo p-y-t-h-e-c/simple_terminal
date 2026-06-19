@@ -1,3 +1,118 @@
+# st - simple terminal 
+
+My fork of the simple terminal with an intention to customise it with patches.
+
+
+## Setting up a fork of simple_terminal (st)
+
+### Initial setup
+
+Create an empty GitHub repo (no README, no .gitignore) then clone it:
+```bash
+git clone git@github.com:YOUR_USERNAME/simple_terminal.git
+cd simple_terminal
+```
+
+Add the suckless upstream remote:
+```bash
+git remote add upstream https://git.suckless.org/st
+```
+
+Fetch all upstream content:
+```bash
+git fetch upstream
+```
+
+Create local master branch tracking upstream:
+```bash
+git checkout -b master upstream/master
+git push origin master
+```
+
+Create your main branch from master:
+```bash
+git checkout -b main
+git push origin main
+```
+
+Set main as default branch on GitHub:
+GitHub → Settings → Branches → Default branch → switch to main
+
+Verify remotes and branches:
+```bash
+git remote -v
+git branch -vv
+```
+
+You should see:
+```bash
+origin    git@github.com:YOUR_USERNAME/simple_terminal.git (fetch)
+origin    git@github.com:YOUR_USERNAME/simple_terminal.git (push)
+upstream  https://git.suckless.org/st (fetch)
+upstream  https://git.suckless.org/st (push)
+main    [origin/main]
+master  [origin/master]
+```
+
+---
+
+### Daily workflow — adding your own patches/config
+
+Always branch off main for your changes:
+```bash
+git checkout main
+git checkout -b feature/patch-name
+```
+
+Make your changes then:
+```bash
+git add .
+git commit -m "descriptive commit message"
+git push origin feature/patch-name
+```
+
+Then open a Pull Request on GitHub: `feature/patch-name` → `main`
+
+---
+
+### Syncing upstream suckless changes
+
+When suckless releases updates:
+```bash
+# Update master from upstream
+git checkout master
+git fetch upstream
+git pull upstream master
+git push origin master
+
+# Merge upstream changes into main
+git checkout main
+git merge master
+git push origin main
+```
+
+If there are conflicts between upstream changes and your patches, resolve them during the merge step.
+
+---
+
+### Branch structure summary
+
+| Branch      | Purpose                                                               |
+|-------------|-----------------------------------------------------------------------|
+| `master`    | mirrors upstream suckless exactly, never commit here directly         |
+| `main`      | your stable customised version, merges from master + feature branches |
+| `feature/*` | individual patches/changes, merged into main via PR                   |
+
+
+Key principles
+* Never commit directly to master — it should always mirror upstream exactly
+* Never commit directly to main — always use feature branches and PRs
+* master → main is always a merge, never a rebase — preserves upstream history cleanly
+* Feature branches always branch from and merge back to main
+
+
+## Original docs
+
 st - simple terminal
 --------------------
 st is a simple terminal emulator for X which sucks less.
